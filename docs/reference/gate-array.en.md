@@ -1,6 +1,6 @@
 # Gate array
 
-The dimensions and structure of the Agile-X gate array that Agile-X Studio places and routes on. All values are read
+The dimensions and structure of the [Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/en/) gate array that Agile-X Studio places and routes on. All values are read
 from `base.gds` by [`scripts/export_gate_array.py`](https://github.com/kadomoto-lab/agile-x-studio/blob/main/scripts/export_gate_array.py)
 into `public/fab/gate-array.json` (`npm run export:fab`, run automatically before `npm run dev`). Coordinates are in
 µm with the origin at the bottom-left of the chip.

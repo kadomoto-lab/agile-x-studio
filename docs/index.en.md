@@ -5,7 +5,7 @@ hide:
 
 # Agile-X Studio
 
-**A browser-based circuit design, simulation and layout environment for the Agile-X gate array.**
+**A browser-based circuit design, simulation and layout environment for the [Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/en/) gate array.**
 
 Draw a circuit as a schematic or a netlist, simulate it with ngspice on the server, and place and route the same circuit
 on the gate array automatically. The result downloads as a GDS file ready for fabrication.

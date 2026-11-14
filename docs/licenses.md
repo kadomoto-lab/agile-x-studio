@@ -27,4 +27,4 @@ Agile-X Studio のソースコード（`src/`、`server/`、`scripts/`、`docs/`
 
 ## Agile-X ゲートアレイのデータ
 
-`public/base.gds`、`public/base_forfab.gds`、`public/spice/z_gabasecell.sp`、`public/fab/` は、Agile-X ゲートアレイのベースとベースセルを表すデータです。
+`public/base.gds`、`public/base_forfab.gds`、`public/spice/z_gabasecell.sp`、`public/fab/` は、[Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/) ゲートアレイのベースとベースセルを表すデータです。

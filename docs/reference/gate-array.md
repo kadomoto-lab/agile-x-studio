@@ -1,6 +1,6 @@
 # ゲートアレイ
 
-Agile-X Studio が配置・配線の対象にしている、Agile-X ゲートアレイの寸法と構成です。値はすべて `base.gds` から [`scripts/export_gate_array.py`](https://github.com/kadomoto-lab/agile-x-studio/blob/main/scripts/export_gate_array.py) が取り出し、`public/fab/gate-array.json` に書いたものです（`npm run export:fab`、`npm run dev` の前に自動で実行）。座標の単位は µm、原点はチップの左下です。
+Agile-X Studio が配置・配線の対象にしている、[Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/) ゲートアレイの寸法と構成です。値はすべて `base.gds` から [`scripts/export_gate_array.py`](https://github.com/kadomoto-lab/agile-x-studio/blob/main/scripts/export_gate_array.py) が取り出し、`public/fab/gate-array.json` に書いたものです（`npm run export:fab`、`npm run dev` の前に自動で実行）。座標の単位は µm、原点はチップの左下です。
 
 ## チップ全体
 

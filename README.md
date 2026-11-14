@@ -8,7 +8,7 @@
 <h1 align="center">Agile-X Studio</h1>
 
 <p align="center">
-  <strong>Agile-X ゲートアレイ向けの、ブラウザで使う回路設計・シミュレーション・レイアウト環境</strong><br>
+  <strong><a href="https://www.agile-x.t.u-tokyo.ac.jp/">Agile-X</a> ゲートアレイ向けの、ブラウザで使う回路設計・シミュレーション・レイアウト環境</strong><br>
   ブロック図で描いた回路を、サーバ側の ngspice でシミュレーションし、ゲートアレイに自動で配置・配線します。
 </p>
 

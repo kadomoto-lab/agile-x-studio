@@ -8,7 +8,7 @@
 <h1 align="center">Agile-X Studio</h1>
 
 <p align="center">
-  <strong>A browser-based circuit design, simulation and layout environment for the Agile-X gate array.</strong><br>
+  <strong>A browser-based circuit design, simulation and layout environment for the <a href="https://www.agile-x.t.u-tokyo.ac.jp/en/">Agile-X</a> gate array.</strong><br>
   Draw a schematic, simulate it with ngspice on the server, and place and route it on the gate array automatically.
 </p>
 

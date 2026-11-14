@@ -37,4 +37,4 @@ must meet its terms for it.
 ## Agile-X gate-array data
 
 `public/base.gds`, `public/base_forfab.gds`, `public/spice/z_gabasecell.sp` and `public/fab/` describe the base and
-base cell of the Agile-X gate array.
+base cell of the [Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/en/) gate array.

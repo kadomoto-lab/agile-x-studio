@@ -106,7 +106,7 @@ No. The transistors use LEVEL=1 models, meant for checking logic and rough delay
 
 ### Can I use it for layouts other than the gate array, or for other processes?
 
-No. Placement and routing are specific to the Agile-X gate array (`base.gds`). Circuits without gate-array parts can
+No. Placement and routing are specific to the [Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/en/) gate array (`base.gds`). Circuits without gate-array parts can
 still be simulated.
 
 ### Does it work without ngspice?
