@@ -1,0 +1,219 @@
+{
+  "version": 2,
+  "description": "GA primitive composition: gate usage, pin mapping, and METAL5 ties per gate instance",
+  "units": "um",
+  "layer": {
+    "layer": 33,
+    "datatype": 0,
+    "name": "METAL5"
+  },
+  "baseCell": {
+    "name": "Z__GABASECELL",
+    "pinOrder": ["P3", "P2", "P1", "G1", "G2", "N3", "N2", "N1"],
+    "terminalY": [5, 25, 65, 85, 125, 145],
+    "routingTracks": [25, 65, 85, 125],
+    "rowCrossingY": [5, 145],
+    "jumperPinX": [5, 15, 25, 35, 125, 135, 145, 155],
+    "vddBusY": 135,
+    "vssBusY": 15
+  },
+  "primitives": [
+    {
+      "id": "INV",
+      "label": "Inverter",
+      "schematicKind": "inv",
+      "spiceSubckt": "INV",
+      "gateCount": 1,
+      "externalPins": [
+        { "name": "IN", "direction": "input" },
+        { "name": "OUT", "direction": "output" },
+        { "name": "VDD", "direction": "power" },
+        { "name": "VSS", "direction": "power" }
+      ],
+      "gates": [
+        {
+          "instance": "X_BC",
+          "baseCell": "Z__GABASECELL",
+          "gateIndex": 0,
+          "spiceLine": "X_BC IN IN OUT VSS OUT OUT VDD OUT VDD VSS Z__GABASECELL",
+          "pinMap": [
+            { "gatePin": "G1", "net": "IN", "primitivePin": "IN" },
+            { "gatePin": "G2", "net": "IN", "primitivePin": "IN" },
+            { "gatePin": "N1", "net": "VSS", "primitivePin": "VSS" },
+            { "gatePin": "N2", "net": "OUT", "primitivePin": "OUT" },
+            { "gatePin": "N3", "net": "VSS", "primitivePin": "VSS" },
+            { "gatePin": "P1", "net": "VDD", "primitivePin": "VDD" },
+            { "gatePin": "P2", "net": "OUT", "primitivePin": "OUT" },
+            { "gatePin": "P3", "net": "VDD", "primitivePin": "VDD" }
+          ],
+          "metal5Ties": [
+            { "net": "IN", "gatePins": ["G1", "G2"], "externalPin": "IN" },
+            { "net": "OUT", "gatePins": ["N2", "P2"], "externalPin": "OUT" },
+            { "net": "VSS", "gatePins": ["N1", "N3"], "externalPin": "VSS" },
+            { "net": "VDD", "gatePins": ["P1", "P3"], "externalPin": "VDD" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "NOR2",
+      "label": "NOR2",
+      "schematicKind": "nor2",
+      "spiceSubckt": "NOR2",
+      "gateCount": 1,
+      "externalPins": [
+        { "name": "A", "direction": "input" },
+        { "name": "B", "direction": "input" },
+        { "name": "OUT", "direction": "output" },
+        { "name": "VDD", "direction": "power" },
+        { "name": "VSS", "direction": "power" }
+      ],
+      "gates": [
+        {
+          "instance": "X_BC",
+          "baseCell": "Z__GABASECELL",
+          "gateIndex": 0,
+          "spiceLine": "X_BC A B OUT VSS OUT OUT _NOR2_PMID VDD VDD VSS Z__GABASECELL",
+          "pinMap": [
+            { "gatePin": "G1", "net": "A", "primitivePin": "A" },
+            { "gatePin": "G2", "net": "B", "primitivePin": "B" },
+            { "gatePin": "N1", "net": "OUT", "primitivePin": "OUT" },
+            { "gatePin": "N2", "net": "VSS", "primitivePin": "VSS" },
+            { "gatePin": "N3", "net": "OUT", "primitivePin": "OUT" },
+            { "gatePin": "P1", "net": "OUT", "primitivePin": "OUT" },
+            { "gatePin": "P2", "net": "_NOR2_PMID" },
+            { "gatePin": "P3", "net": "VDD", "primitivePin": "VDD" }
+          ],
+          "metal5Ties": [
+            { "net": "A", "gatePins": ["G1"], "externalPin": "A" },
+            { "net": "B", "gatePins": ["G2"], "externalPin": "B" },
+            { "net": "OUT", "gatePins": ["N1", "N3", "P1"], "externalPin": "OUT" },
+            { "net": "VSS", "gatePins": ["N2"], "externalPin": "VSS" },
+            { "net": "VDD", "gatePins": ["P3"], "externalPin": "VDD" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "NAND2",
+      "label": "NAND2",
+      "schematicKind": "nand2",
+      "spiceSubckt": "NAND2",
+      "gateCount": 1,
+      "externalPins": [
+        { "name": "A", "direction": "input" },
+        { "name": "B", "direction": "input" },
+        { "name": "OUT", "direction": "output" },
+        { "name": "VDD", "direction": "power" },
+        { "name": "VSS", "direction": "power" }
+      ],
+      "gates": [
+        {
+          "instance": "X_BC",
+          "baseCell": "Z__GABASECELL",
+          "gateIndex": 0,
+          "spiceLine": "X_BC A B OUT _NAND2_NMID VSS OUT VDD OUT VDD VSS Z__GABASECELL",
+          "pinMap": [
+            { "gatePin": "G1", "net": "A", "primitivePin": "A" },
+            { "gatePin": "G2", "net": "B", "primitivePin": "B" },
+            { "gatePin": "N1", "net": "OUT", "primitivePin": "OUT" },
+            { "gatePin": "N2", "net": "_NAND2_NMID" },
+            { "gatePin": "N3", "net": "VSS", "primitivePin": "VSS" },
+            { "gatePin": "P1", "net": "OUT", "primitivePin": "OUT" },
+            { "gatePin": "P2", "net": "VDD", "primitivePin": "VDD" },
+            { "gatePin": "P3", "net": "OUT", "primitivePin": "OUT" }
+          ],
+          "metal5Ties": [
+            { "net": "A", "gatePins": ["G1"], "externalPin": "A" },
+            { "net": "B", "gatePins": ["G2"], "externalPin": "B" },
+            { "net": "OUT", "gatePins": ["N1", "P1", "P3"], "externalPin": "OUT" },
+            { "net": "VSS", "gatePins": ["N3"], "externalPin": "VSS" },
+            { "net": "VDD", "gatePins": ["P2"], "externalPin": "VDD" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Z__GABASECELL",
+      "label": "GA Base Cell",
+      "schematicKind": "gabasecell",
+      "spiceSubckt": "Z__GABASECELL",
+      "gateCount": 1,
+      "externalPins": [
+        { "name": "G1", "direction": "input" },
+        { "name": "G2", "direction": "input" },
+        { "name": "N1", "direction": "inout" },
+        { "name": "N2", "direction": "inout" },
+        { "name": "N3", "direction": "inout" },
+        { "name": "P1", "direction": "inout" },
+        { "name": "P2", "direction": "inout" },
+        { "name": "P3", "direction": "inout" },
+        { "name": "VDD", "direction": "power" },
+        { "name": "VSS", "direction": "power" }
+      ],
+      "gates": [
+        {
+          "instance": "X_BC",
+          "baseCell": "Z__GABASECELL",
+          "gateIndex": 0,
+          "spiceLine": "X{ref} {g1} {g2} {n1} {n2} {n3} {p1} {p2} {p3} {vdd} {vss} Z__GABASECELL",
+          "pinMap": [
+            { "gatePin": "G1", "net": "G1", "primitivePin": "G1" },
+            { "gatePin": "G2", "net": "G2", "primitivePin": "G2" },
+            { "gatePin": "N1", "net": "N1", "primitivePin": "N1" },
+            { "gatePin": "N2", "net": "N2", "primitivePin": "N2" },
+            { "gatePin": "N3", "net": "N3", "primitivePin": "N3" },
+            { "gatePin": "P1", "net": "P1", "primitivePin": "P1" },
+            { "gatePin": "P2", "net": "P2", "primitivePin": "P2" },
+            { "gatePin": "P3", "net": "P3", "primitivePin": "P3" }
+          ],
+          "metal5Ties": []
+        }
+      ]
+    },
+    {
+      "id": "NMOS",
+      "label": "NMOS",
+      "schematicKind": "nmos",
+      "spiceSubckt": "NMOS",
+      "gateCount": 0,
+      "fabricationNote": "SPICE device subckt only; no Z__GABASECELL placement",
+      "externalPins": [
+        { "name": "D", "direction": "inout" },
+        { "name": "G", "direction": "input" },
+        { "name": "S", "direction": "inout" },
+        { "name": "VSS", "direction": "power" }
+      ],
+      "gates": []
+    },
+    {
+      "id": "PMOS",
+      "label": "PMOS",
+      "schematicKind": "pmos",
+      "spiceSubckt": "PMOS",
+      "gateCount": 0,
+      "fabricationNote": "SPICE device subckt only; no Z__GABASECELL placement",
+      "externalPins": [
+        { "name": "D", "direction": "inout" },
+        { "name": "G", "direction": "input" },
+        { "name": "S", "direction": "inout" },
+        { "name": "VDD", "direction": "power" }
+      ],
+      "gates": []
+    },
+    {
+      "id": "MOSCAP",
+      "label": "MOS Cap",
+      "schematicKind": "moscap",
+      "spiceSubckt": "MOSCAP",
+      "gateCount": 0,
+      "fabricationNote": "SPICE device subckt only; no Z__GABASECELL placement",
+      "externalPins": [
+        { "name": "PLUS", "direction": "inout" },
+        { "name": "MINUS", "direction": "input" },
+        { "name": "VSS", "direction": "power" }
+      ],
+      "gates": []
+    }
+  ]
+}

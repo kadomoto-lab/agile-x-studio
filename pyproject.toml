@@ -1,0 +1,28 @@
+[project]
+name = "agile-x-studio"
+version = "0.1.0"
+description = "A browser-based circuit design, simulation and layout environment for the Agile-X gate array"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+# API サーバ（server/）とスクリプト（scripts/）が使うパッケージ。
+# ngspice は Python パッケージではないので、OS 側で入れる（README を参照）。
+dependencies = [
+    "fastapi>=0.110",
+    "gdsfactory>=9.0",
+    "klayout>=0.30",
+    "numpy>=1.26",
+    "pydantic>=2.0",
+    "uvicorn[standard]>=0.29",
+]
+
+[dependency-groups]
+# ドキュメントサイト（MkDocs）: uv run --only-group docs mkdocs serve
+docs = [
+    "mkdocs-material==9.7.7",
+    "mkdocs-static-i18n==1.3.1",
+]
+
+[tool.uv]
+# アプリとして使うだけで、パッケージとしてはインストールしない
+package = false

@@ -1,0 +1,144 @@
+site_name: Agile-X Studio
+site_description: Agile-X ゲートアレイ向けの、ブラウザで使う回路設計・シミュレーション・レイアウト環境
+site_url: https://kadomoto-lab.github.io/agile-x-studio/
+repo_url: https://github.com/kadomoto-lab/agile-x-studio
+repo_name: kadomoto-lab/agile-x-studio
+edit_uri: edit/main/docs/
+copyright: Agile-X Studio is released under the MIT License
+
+# リンク切れ（ページ内アンカーを含む）をビルドの失敗にする（--strict と組み合わせる）
+validation:
+  omitted_files: warn
+  absolute_links: info
+  unrecognized_links: warn
+  anchors: warn
+
+theme:
+  name: material
+  language: ja
+  logo: assets/logo-dark.svg
+  favicon: assets/favicon.svg
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil-outline
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: ダークテーマに切り替え
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: ライトテーマに切り替え
+  font: false
+  features:
+    - navigation.sections
+    - navigation.tracking
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+    - toc.follow
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/kadomoto-lab/agile-x-studio
+      name: GitHub
+    - icon: material/bug-outline
+      link: https://github.com/kadomoto-lab/agile-x-studio/issues
+      name: Issues
+
+extra_css:
+  - https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap
+  - assets/extra.css
+
+# 日本語が正本: page.md が日本語、page.en.md が英語。英語版は /en/ 以下に出る。
+# 英語版のないページは日本語にフォールバックする。
+plugins:
+  - search:
+      lang: [ja, en]
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: ja
+          default: true
+          name: 日本語
+          build: true
+        - locale: en
+          name: English
+          build: true
+          site_description: A browser-based circuit design, simulation and layout environment for the Agile-X gate array
+          nav_translations:
+            "ホーム": "Home"
+            "概要": "Overview"
+            "はじめに": "Getting started"
+            "インストール": "Install"
+            "最初の回路": "Your first circuit"
+            "チュートリアル": "Tutorials"
+            "2 行にまたがる 4 ビット加算器": "A 4-bit adder across two rows"
+            "ユーザーガイド": "User guide"
+            "ブロック図エディタ": "Schematic editor"
+            "ネットリスト": "Netlist"
+            "シミュレーション": "Simulation"
+            "レイアウト": "Layout"
+            "表示言語": "Interface language"
+            "リファレンス": "Reference"
+            "ゲートアレイ": "Gate array"
+            "HTTP API": "HTTP API"
+            "コマンドと設定": "Commands and configuration"
+            "ヘルプ": "Help"
+            "トラブルシューティングと FAQ": "Troubleshooting and FAQ"
+            "開発": "Development"
+            "アーキテクチャと開発": "Architecture and development"
+            "ライセンス": "Licenses"
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - ホーム: index.md
+  - 概要: overview.md
+  - はじめに:
+      - インストール: getting-started/install.md
+      - 最初の回路: getting-started/first-circuit.md
+  - チュートリアル:
+      - 2 行にまたがる 4 ビット加算器: tutorials/adder.md
+  - ユーザーガイド:
+      - ブロック図エディタ: guide/schematic.md
+      - ネットリスト: guide/netlist.md
+      - シミュレーション: guide/simulation.md
+      - レイアウト: guide/layout.md
+      - 表示言語: guide/language.md
+  - リファレンス:
+      - ゲートアレイ: reference/gate-array.md
+      - HTTP API: reference/api.md
+      - コマンドと設定: reference/configuration.md
+  - ヘルプ:
+      - トラブルシューティングと FAQ: troubleshooting.md
+  - 開発:
+      - アーキテクチャと開発: development.md
+      - ライセンス: licenses.md

@@ -1,0 +1,169 @@
+@import 'tailwindcss';
+@import 'uplot/dist/uPlot.min.css';
+
+@theme {
+  /* Agile-X brand — https://www.agile-x.t.u-tokyo.ac.jp/ */
+  --font-sans: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Noto Sans JP', ui-monospace, monospace;
+
+  --color-ax-navy: #002137;
+  --color-ax-navy-muted: #003a5c;
+  --color-ax-blue: #187fc4;
+  --color-ax-blue-light: #388fca;
+  --color-ax-gold: #f8bb00;
+  --color-ax-gold-light: #ffc100;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f7fa;
+  --color-surface-raised: #ededed;
+  --color-surface-inset: #fafbfc;
+  --color-border: #d9d9d9;
+  --color-border-strong: #999999;
+
+  --color-foreground: #333333;
+  --color-muted: #666666;
+  --color-muted-light: #888888;
+
+  --color-accent: #187fc4;
+  --color-accent-hover: #388fca;
+  --color-highlight: #f8bb00;
+  --color-success: #037b4e;
+  --color-danger: #c0392b;
+  --color-on-navy: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-surface-muted);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.uplot {
+  font-family: var(--font-sans);
+}
+
+.uplot .u-legend {
+  font-size: 12px;
+}
+
+.react-flow__node {
+  font-family: var(--font-sans);
+}
+
+.react-flow {
+  --xy-edge-stroke-default: #187fc4;
+  --xy-edge-stroke-width-default: 2;
+  --xy-edge-stroke-selected-default: #f8bb00;
+}
+
+.react-flow__edge-path {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+  stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));
+  transition: stroke 0.12s ease, stroke-width 0.12s ease, filter 0.12s ease;
+}
+
+.react-flow__edge.selectable:hover .react-flow__edge-path {
+  stroke: #388fca;
+  stroke-width: 3;
+}
+
+.react-flow__edge.selectable {
+  cursor: pointer;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge.selectable:focus .react-flow__edge-path,
+.react-flow__edge.selectable:focus-visible .react-flow__edge-path {
+  stroke: #f8bb00 !important;
+  stroke-width: 4 !important;
+  filter: drop-shadow(0 0 6px rgba(248, 187, 0, 0.55));
+}
+
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+}
+
+.react-flow__minimap {
+  border-radius: 8px;
+}
+
+/* --- 回路図: ピン・接続点（xschem / Undine 風） --- */
+.react-flow__handle.schematic-pin {
+  width: 8px;
+  height: 8px;
+  min-width: 0;
+  min-height: 0;
+  border: 1.5px solid transparent;
+  border-radius: 1px;
+  background: transparent;
+  transform: translate(-50%, -50%);
+}
+
+.react-flow__node:hover .react-flow__handle.schematic-pin,
+.react-flow__handle.schematic-pin.connectingto,
+.react-flow__handle.schematic-pin.connectionindicator:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+/* 未接続ピンは赤点で示す */
+.react-flow__handle.schematic-pin.is-dangling {
+  width: 6px;
+  height: 6px;
+  border-color: transparent;
+  border-radius: 9999px;
+  background: var(--color-danger);
+}
+
+.react-flow__node:hover .react-flow__handle.schematic-pin.is-dangling {
+  border-color: var(--color-danger);
+  background: var(--color-surface);
+}
+
+.react-flow__edge-wire .react-flow__edge-path {
+  stroke-width: 1.5;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+
+.schematic-junction {
+  fill: var(--xy-edge-stroke-default);
+}
+
+.react-flow__edge.selected .schematic-junction {
+  fill: #f8bb00;
+}
+
+/* クリック配線中はキャンバス全体を十字カーソルに */
+.schematic-wiring .react-flow__pane,
+.schematic-wiring .react-flow__node,
+.schematic-wiring .react-flow__edge {
+  cursor: crosshair;
+}

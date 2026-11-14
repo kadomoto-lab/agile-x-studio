@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-properties>
+  <properties>
+    <frame-color>#e8a838</frame-color>
+    <fill-color>#e8a838</fill-color>
+    <frame-brightness>0</frame-brightness>
+    <fill-brightness>0</fill-brightness>
+    <dither-pattern>I0</dither-pattern>
+    <line-style/>
+    <valid>true</valid>
+    <visible>true</visible>
+    <transparent>false</transparent>
+    <width>1</width>
+    <marked>false</marked>
+    <xfill>false</xfill>
+    <animation>0</animation>
+    <name>METAL4 drawing</name>
+    <source>31/0@1</source>
+  </properties>
+  <properties>
+    <frame-color>#6b8cff</frame-color>
+    <fill-color>#6b8cff</fill-color>
+    <frame-brightness>0</frame-brightness>
+    <fill-brightness>0</fill-brightness>
+    <dither-pattern>I0</dither-pattern>
+    <line-style/>
+    <valid>true</valid>
+    <visible>true</visible>
+    <transparent>false</transparent>
+    <width>1</width>
+    <marked>false</marked>
+    <xfill>false</xfill>
+    <animation>0</animation>
+    <name>VIA45 drawing</name>
+    <source>32/0@1</source>
+  </properties>
+  <properties>
+    <frame-color>#38d4a8</frame-color>
+    <fill-color>#38d4a8</fill-color>
+    <frame-brightness>0</frame-brightness>
+    <fill-brightness>0</fill-brightness>
+    <dither-pattern>I0</dither-pattern>
+    <line-style/>
+    <valid>true</valid>
+    <visible>true</visible>
+    <transparent>false</transparent>
+    <width>1</width>
+    <marked>false</marked>
+    <xfill>false</xfill>
+    <animation>0</animation>
+    <name>METAL5 drawing</name>
+    <source>33/0@1</source>
+  </properties>
+  <properties>
+    <frame-color>#ffffff</frame-color>
+    <fill-color>#ffffff</fill-color>
+    <frame-brightness>0</frame-brightness>
+    <fill-brightness>0</fill-brightness>
+    <dither-pattern>I0</dither-pattern>
+    <line-style/>
+    <valid>true</valid>
+    <visible>true</visible>
+    <transparent>false</transparent>
+    <width>1</width>
+    <marked>false</marked>
+    <xfill>false</xfill>
+    <animation>0</animation>
+    <name>Label halo</name>
+    <source>130/0@1</source>
+  </properties>
+  <properties>
+    <frame-color>#c0392b</frame-color>
+    <fill-color>#c0392b</fill-color>
+    <frame-brightness>0</frame-brightness>
+    <fill-brightness>0</fill-brightness>
+    <dither-pattern>I0</dither-pattern>
+    <line-style/>
+    <valid>true</valid>
+    <visible>true</visible>
+    <transparent>false</transparent>
+    <width>2</width>
+    <marked>true</marked>
+    <xfill>false</xfill>
+    <animation>0</animation>
+    <name>Annotation labels</name>
+    <source>131/0@1</source>
+  </properties>
+</layer-properties>

@@ -1,0 +1,27 @@
+/* Agile-X Studio のブランド色（src/index.css と同じ値） */
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #002137;
+  --md-primary-fg-color--light: #003a5c;
+  --md-primary-fg-color--dark: #00182a;
+  --md-accent-fg-color: #187fc4;
+  --md-typeset-a-color: #187fc4;
+  --md-text-font: "Noto Sans JP", system-ui, sans-serif;
+  --md-code-font: "IBM Plex Mono", "Noto Sans JP", ui-monospace, monospace;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #002137;
+  --md-primary-fg-color--light: #003a5c;
+  --md-primary-fg-color--dark: #00182a;
+  --md-accent-fg-color: #4aa3e0;
+  --md-typeset-a-color: #4aa3e0;
+}
+
+.md-typeset img {
+  border-radius: 6px;
+}
+
+.md-typeset figure img {
+  box-shadow: 0 1px 6px rgb(0 0 0 / 18%);
+}
