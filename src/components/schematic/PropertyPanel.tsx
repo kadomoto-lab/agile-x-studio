@@ -22,28 +22,28 @@ export function PropertyPanel({
   onDeleteNode,
 }: PropertyPanelProps) {
   return (
-    <aside className="flex w-52 shrink-0 flex-col border-l border-border bg-surface-muted">
-      <div className="border-b border-border px-3 py-2">
-        <h2 className="text-[10px] font-semibold uppercase tracking-wider text-muted">
+    <aside className="flex w-52 shrink-0 flex-col border-l border-hairline bg-surface-muted">
+      <div className="border-b border-hairline px-3 pb-2 pt-2.5">
+        <h2 className="text-[13px] font-semibold text-foreground">
           {messages.properties.title}
         </h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-3 space-y-4">
+      <div className="flex-1 space-y-4 overflow-y-auto px-3 pb-4 pt-3">
         <div>
-          <label className="mb-1 block text-[10px] text-muted">
+          <label className="mb-1 block text-[11px] font-medium text-muted">
             {messages.properties.circuitTitle}
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
-            className="w-full rounded-md border border-border bg-surface px-2 py-1 text-xs text-foreground outline-none focus:border-accent/60"
+            className="h-8 w-full rounded-md border border-border bg-surface px-2 text-[12.5px] text-foreground outline-none transition-colors hover:border-border-strong focus:border-accent focus:ring-2 focus:ring-accent/20"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-[10px] text-muted">
+          <label className="mb-1 block text-[11px] font-medium text-muted">
             {messages.properties.analysis}
           </label>
           <select
@@ -54,7 +54,7 @@ export function PropertyPanel({
                 type: e.target.value as AnalysisType,
               })
             }
-            className="mb-1 w-full rounded-md border border-border bg-surface px-2 py-1 text-xs text-foreground"
+            className="mb-1.5 h-8 w-full rounded-md border border-border bg-surface px-2 text-[12.5px] text-foreground outline-none transition-colors hover:border-border-strong focus:border-accent focus:ring-2 focus:ring-accent/20"
           >
             <option value="tran">{messages.properties.analysisTran}</option>
             <option value="ac">{messages.properties.analysisAc}</option>
@@ -68,7 +68,7 @@ export function PropertyPanel({
                 onAnalysisChange({ ...analysis, params: e.target.value })
               }
               placeholder={analysis.type === 'tran' ? '10u 5m' : 'dec 50 10 1Meg'}
-              className="w-full rounded-md border border-border bg-surface px-2 py-1 font-mono text-xs text-foreground outline-none focus:border-accent/60"
+              className="h-8 w-full rounded-md border border-border bg-surface px-2 text-[12.5px] text-foreground outline-none transition-colors hover:border-border-strong focus:border-accent focus:ring-2 focus:ring-accent/20 font-mono"
             />
           )}
         </div>
@@ -80,7 +80,7 @@ export function PropertyPanel({
             onDelete={() => onDeleteNode(selectedNode.id)}
           />
         ) : (
-          <p className="text-[10px] text-muted-light">
+          <p className="border-t border-hairline pt-4 text-[12px] leading-relaxed text-muted-light">
             {messages.properties.selectBlock}
           </p>
         )}
@@ -102,8 +102,8 @@ function NodeProperties({
   const d = node.data
 
   return (
-    <div className="space-y-2 rounded-lg border border-border bg-surface-muted p-2">
-      <div className="text-xs font-semibold text-foreground">{lib.label}</div>
+    <div className="space-y-3 border-t border-hairline pt-4">
+      <div className="text-[13px] font-semibold text-foreground">{lib.label}</div>
 
       {d.kind === 'vdd' && (
         <>
@@ -120,10 +120,10 @@ function NodeProperties({
           />
           {lib.spiceTemplate && (
             <div>
-              <label className="mb-0.5 block text-[10px] text-muted">
+              <label className="mb-1 block text-[11px] font-medium text-muted">
                 {messages.properties.fieldSpice}
               </label>
-              <pre className="overflow-x-auto rounded-md border border-border bg-surface-inset p-2 font-mono text-[9px] leading-relaxed text-muted">
+              <pre className="overflow-x-auto rounded-md border border-hairline bg-surface-inset p-2 font-mono text-[11px] leading-relaxed text-muted">
                 {lib.spiceTemplate
                   .replace('{ref}', d.ref)
                   .replace('{value}', d.value)}
@@ -153,7 +153,7 @@ function NodeProperties({
             />
           )}
           {d.kind.startsWith('voltage_') && (
-            <p className="text-[9px] leading-relaxed text-muted">
+            <p className="text-[11px] leading-relaxed text-muted-light">
               {messages.properties.voltagePolarityHint.replace(
                 '{ref}',
                 d.ref,
@@ -170,10 +170,10 @@ function NodeProperties({
               />
               {lib.spiceTemplate && (
                 <div>
-                  <label className="mb-0.5 block text-[10px] text-muted">
+                  <label className="mb-1 block text-[11px] font-medium text-muted">
                     {messages.properties.fieldSpice}
                   </label>
-                  <pre className="overflow-x-auto rounded-md border border-border bg-surface-inset p-2 font-mono text-[9px] leading-relaxed text-muted">
+                  <pre className="overflow-x-auto rounded-md border border-hairline bg-surface-inset p-2 font-mono text-[11px] leading-relaxed text-muted">
                     {lib.spiceTemplate.replace('{ref}', d.ref)}
                   </pre>
                 </div>
@@ -191,7 +191,7 @@ function NodeProperties({
             mono
             onChange={(v) => onUpdate({ netName: v, value: v })}
           />
-          <label className="flex items-center gap-1.5 text-[10px] text-muted">
+          <label className="flex items-center gap-2 text-[12px] text-muted">
             <input
               type="checkbox"
               checked={!!d.flip}
@@ -211,7 +211,7 @@ function NodeProperties({
             onChange={(v) => onUpdate({ ref: v })}
           />
           <div>
-            <label className="mb-0.5 block text-[10px] text-muted">
+            <label className="mb-1 block text-[11px] font-medium text-muted">
               {messages.properties.fieldPad(
                 d.kind === 'ga_io_in' ? 'in' : 'out',
               )}
@@ -219,7 +219,7 @@ function NodeProperties({
             <select
               value={d.padIndex ?? 0}
               onChange={(e) => onUpdate({ padIndex: Number(e.target.value) })}
-              className="w-full rounded-md border border-border bg-surface-inset px-2 py-1 text-xs text-foreground"
+              className="h-8 w-full rounded-md border border-border bg-surface px-2 text-[12.5px] text-foreground outline-none transition-colors hover:border-border-strong focus:border-accent focus:ring-2 focus:ring-accent/20"
             >
               {Array.from({ length: 13 }, (_, i) => (
                 <option key={i} value={i}>
@@ -234,7 +234,7 @@ function NodeProperties({
       <button
         type="button"
         onClick={onDelete}
-        className="mt-2 w-full rounded-md border border-danger/30 bg-danger/10 py-1 text-[10px] font-medium text-danger hover:bg-danger/20"
+        className="mt-1 h-8 w-full rounded-md border border-transparent text-[12px] font-medium text-danger transition-colors hover:border-danger/30 hover:bg-danger/[0.06]"
       >
         {messages.properties.delete}
       </button>
@@ -257,13 +257,13 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-0.5 block text-[10px] text-muted">{label}</label>
+      <label className="mb-1 block text-[11px] font-medium text-muted">{label}</label>
       <input
         type="text"
         value={value}
         readOnly={readOnly}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-        className={`w-full rounded-md border border-border bg-surface-inset px-2 py-1 text-xs text-foreground outline-none focus:border-accent/60 ${mono ? 'font-mono' : ''} ${readOnly ? 'opacity-70' : ''}`}
+        className={`h-8 w-full rounded-md border px-2 text-[12.5px] text-foreground outline-none transition-colors ${mono ? 'font-mono' : ''} ${readOnly ? 'border-hairline bg-surface-inset text-muted' : 'border-border bg-surface hover:border-border-strong focus:border-accent focus:ring-2 focus:ring-accent/20'}`}
       />
     </div>
   )

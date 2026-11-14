@@ -10,20 +10,84 @@ export type WaveformTrace = {
 export type WaveformData = {
   xLabel: string
   yLabel: string
+  /** 横軸の単位（時間なら s、周波数なら Hz） */
+  xUnit: string
   x: number[]
   traces: WaveformTrace[]
 }
 
+/**
+ * 波形の色。Agile-X のブランド色を基にし、白地で線が見えるよう明るすぎる色（ゴールドなど）は
+ * 暗めに寄せ、隣り合う色の色相を離している。
+ */
 const TRACE_COLORS = [
   '#187fc4',
   '#037b4e',
-  '#f8bb00',
-  '#388fca',
-  '#004fa0',
-  '#f1942e',
-  '#002137',
   '#c0392b',
+  '#a87700',
+  '#0d3b5c',
+  '#c8620a',
+  '#6b4fa0',
+  '#4c8a2e',
 ]
+
+const SI_PREFIXES: [number, string][] = [
+  [-15, 'f'],
+  [-12, 'p'],
+  [-9, 'n'],
+  [-6, 'µ'],
+  [-3, 'm'],
+  [0, ''],
+  [3, 'k'],
+  [6, 'M'],
+  [9, 'G'],
+]
+
+/** 信号名から単位を推定する（v(...) は V、i(...) は A） */
+export function traceUnit(name: string): string {
+  if (/^v\(/i.test(name)) return 'V'
+  if (/^i\(/i.test(name)) return 'A'
+  return ''
+}
+
+function siPrefix(maxAbs: number): [number, string] {
+  const exp = Math.min(9, Math.max(-15, Math.floor(Math.log10(maxAbs) / 3) * 3))
+  return [exp, SI_PREFIXES.find(([e]) => e === exp)?.[1] ?? '']
+}
+
+/** 1 つの値を有効数字 3 桁で SI 接頭辞つきにする（例: 4.7e-6 → "4.7 µF"） */
+function formatSiValue(v: number, unit: string): string {
+  if (v === 0) return unit ? `0 ${unit}` : '0'
+  const [exp, prefix] = siPrefix(Math.abs(v))
+  return `${Number((v / 10 ** exp).toPrecision(3))} ${prefix}${unit}`
+}
+
+/**
+ * 目盛りの値を SI 接頭辞つきで表す（例: 5e-9 → "5 ns"）。
+ * 1 本の軸の目盛りは同じ接頭辞にそろえ、刻み幅に合わせて小数の桁数を決める。
+ * 単位のない値には接頭辞をつけず、桁が大きく違う目盛り（対数軸など）は 1 つずつ表す。
+ */
+export function formatSiTicks(ticks: number[], unit: string): string[] {
+  const finite = ticks.filter((t) => Number.isFinite(t))
+  const maxAbs = finite.reduce((m, t) => Math.max(m, Math.abs(t)), 0)
+  if (maxAbs === 0) return ticks.map(() => (unit ? `0 ${unit}` : '0'))
+  const minAbs = finite.reduce((m, t) => (t !== 0 ? Math.min(m, Math.abs(t)) : m), Infinity)
+
+  if (!unit) {
+    if (maxAbs >= 1e5 || maxAbs < 1e-3) return ticks.map((t) => (t === 0 ? '0' : t.toExponential(1)))
+    return ticks.map((t) => String(Number(t.toPrecision(4))))
+  }
+  if (maxAbs / minAbs >= 1000) return ticks.map((t) => formatSiValue(t, unit))
+
+  const [exp, prefix] = siPrefix(maxAbs)
+  const scale = 10 ** exp
+  const step = finite.length > 1 ? Math.abs(finite[1] - finite[0]) / scale : maxAbs / scale
+  const decimals = Math.min(4, Math.max(0, -Math.floor(Math.log10(step) + 1e-9)))
+  return ticks.map((t) => {
+    const text = (t / scale).toFixed(decimals)
+    return `${Number(text) === 0 ? '0' : text} ${prefix}${unit}`
+  })
+}
 
 const POWER_RAIL_RE = /^v\(vdd\)$/i
 const GROUND_RAIL_RE = /^v\(0\)$/i
@@ -57,6 +121,13 @@ function findAxisIndex(result: ResultType): number {
   const freqIdx = names.indexOf('frequency')
   if (freqIdx >= 0) return freqIdx
   return 0
+}
+
+function axisUnit(axisName: string): string {
+  const lower = axisName.toLowerCase()
+  if (lower === 'time') return 's'
+  if (lower === 'frequency') return 'Hz'
+  return ''
 }
 
 function axisLabel(axisName: string): string {
@@ -106,7 +177,7 @@ export function resultToWaveform(result: ResultType): WaveformData {
       colorIdx++
     }
 
-    return { ...waveformLabels(result), x, traces }
+    return { ...waveformLabels(result), xUnit: axisUnit(result.variableNames[axisIdx] ?? ''), x, traces }
   }
 
   const x = result.data[axisIdx]?.values ?? []
@@ -125,5 +196,5 @@ export function resultToWaveform(result: ResultType): WaveformData {
     colorIdx++
   }
 
-  return { ...waveformLabels(result), x, traces }
+  return { ...waveformLabels(result), xUnit: axisUnit(result.variableNames[axisIdx] ?? ''), x, traces }
 }

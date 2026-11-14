@@ -9,7 +9,8 @@ const ja: Messages = {
     runSimulation: 'シミュレーション実行',
     running: '実行中…',
     waveform: '波形',
-    waveformPts: (points, signals) => `${points} pts · ${signals} signals`,
+    waveformPts: (points, signals) =>
+      `${signals} 信号 · ${points.toLocaleString('ja-JP')} 点`,
     console: 'コンソール',
     logSimStart: '> シミュレーション開始…',
     logSimComplete: (traces, points, dataType) =>

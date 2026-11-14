@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
-import { Play, Loader2 } from 'lucide-react'
+import { ChevronDown, Play, Loader2 } from 'lucide-react'
 import { DesignPane } from './components/DesignPane'
 import { WaveformViewer } from './components/WaveformViewer'
 import { Console } from './components/Console'
 import { LanguageToggle } from './components/LanguageToggle'
+import { PaneHeader } from './components/PaneHeader'
 import { initEngine, runNetlist, type RunResult } from './lib/simulation'
 import { resultToWaveform, waveformLabels } from './lib/waveform'
 import { useCircuitProject } from './hooks/useCircuitProject'
@@ -212,56 +213,59 @@ export default function App() {
 
   return (
     <div className="flex h-full flex-col bg-surface-muted">
-      <header className="flex h-14 shrink-0 items-center justify-between border-b border-ax-navy-muted bg-ax-navy px-4 shadow-md">
-        <div className="flex items-center gap-3">
-          <img
-            src={LOGO_URL}
-            alt="Agile-X"
-            className="h-10 w-auto"
-          />
-          <div>
-            <h1 className="text-sm font-semibold tracking-tight text-on-navy">
+      <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-ax-navy-muted bg-ax-navy pl-3 pr-4">
+        <div className="flex min-w-0 items-center gap-4">
+          <div className="flex shrink-0 items-center gap-2.5">
+            <img src={LOGO_URL} alt="Agile-X" className="h-9 w-auto" />
+            <h1 className="text-[15px] font-semibold tracking-tight text-on-navy">
               Agile-X Studio
             </h1>
           </div>
-          <label className="ml-2 flex items-center gap-2">
-            <span className="text-[10px] font-medium uppercase tracking-wider text-on-navy/70">
+          <span aria-hidden className="h-6 w-px shrink-0 bg-on-navy/15" />
+          <label className="flex min-w-0 items-center gap-2">
+            <span className="shrink-0 text-xs text-on-navy/70">
               {messages.app.sampleCircuit}
             </span>
-            <select
-              value={project.sampleId}
-              disabled={isBusy}
-              onChange={(e) => {
-                const id = e.target.value as SampleId
-                if (id === project.sampleId) return
-                project.loadSample(id)
-                setLayoutSyncedNetlist(null)
-                setSimResult(null)
-                appendLog(messages.app.logSampleLoaded(sampleLabel(id)))
-              }}
-              className="rounded-md border border-ax-navy-muted bg-ax-navy px-2 py-1 text-xs text-on-navy shadow-sm outline-none focus:border-ax-blue focus:ring-1 focus:ring-ax-blue disabled:opacity-40"
-            >
-              {SAMPLE_IDS.map((id) => (
-                <option key={id} value={id}>
-                  {sampleLabel(id)}
-                </option>
-              ))}
-            </select>
+            <span className="relative min-w-0">
+              <select
+                value={project.sampleId}
+                disabled={isBusy}
+                onChange={(e) => {
+                  const id = e.target.value as SampleId
+                  if (id === project.sampleId) return
+                  project.loadSample(id)
+                  setLayoutSyncedNetlist(null)
+                  setSimResult(null)
+                  appendLog(messages.app.logSampleLoaded(sampleLabel(id)))
+                }}
+                className="h-8 max-w-full appearance-none truncate rounded-md border border-on-navy/15 bg-on-navy/5 pl-2.5 pr-8 text-[13px] text-on-navy outline-none transition-colors hover:bg-on-navy/10 focus-visible:border-ax-blue disabled:opacity-40 [&>option]:bg-surface [&>option]:text-foreground"
+              >
+                {SAMPLE_IDS.map((id) => (
+                  <option key={id} value={id}>
+                    {sampleLabel(id)}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden
+                className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-on-navy/60"
+              />
+            </span>
           </label>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <LanguageToggle />
           <button
             type="button"
             disabled={!canRun}
             onClick={runSimulation}
-            className="flex items-center gap-2 rounded-lg bg-ax-blue px-4 py-1.5 text-sm font-semibold text-on-navy shadow-lg shadow-ax-blue/30 transition-all hover:bg-ax-blue-light disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 items-center gap-2 rounded-md bg-ax-blue px-4 text-[13px] font-semibold text-on-navy transition-colors hover:bg-ax-blue-light active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSimulating ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              <Play className="h-4 w-4 fill-current" />
+              <Play className="h-3.5 w-3.5 fill-current" />
             )}
             {isSimulating
               ? messages.app.running
@@ -304,7 +308,7 @@ export default function App() {
           <div
             role="separator"
             aria-orientation="vertical"
-            className="w-1 shrink-0 cursor-col-resize bg-border transition-colors hover:bg-accent/60"
+            className="relative w-px shrink-0 cursor-col-resize bg-border transition-colors after:absolute after:inset-y-0 after:-left-1 after:w-[9px] after:content-[''] hover:bg-accent"
             onMouseDown={() => {
               draggingSplit.current = true
               document.body.style.cursor = 'col-resize'
@@ -313,19 +317,16 @@ export default function App() {
           />
 
           <section className="flex min-w-0 flex-1 flex-col bg-surface">
-            <div className="flex h-9 shrink-0 items-center justify-between border-b border-border px-3">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted">
-                {messages.app.waveform}
-              </span>
+            <PaneHeader title={messages.app.waveform}>
               {waveform && (
-                <span className="text-[10px] text-muted">
+                <span className="tabular-nums">
                   {messages.app.waveformPts(
                     waveform.x.length,
                     waveform.traces.length,
                   )}
                 </span>
               )}
-            </div>
+            </PaneHeader>
             <div className="min-h-0 flex-1">
               <WaveformViewer waveform={waveform} simulating={isSimulating} />
             </div>
@@ -335,7 +336,7 @@ export default function App() {
         <div
           role="separator"
           aria-orientation="horizontal"
-          className="h-1 shrink-0 cursor-row-resize bg-border transition-colors hover:bg-accent/60"
+          className="relative h-px shrink-0 cursor-row-resize bg-border transition-colors after:absolute after:inset-x-0 after:-top-1 after:h-[9px] after:content-[''] hover:bg-accent"
           onMouseDown={() => {
             draggingConsole.current = true
             document.body.style.cursor = 'row-resize'
@@ -344,15 +345,11 @@ export default function App() {
         />
 
         <div
-          className="shrink-0 border-t border-border bg-surface"
+          className="flex shrink-0 flex-col bg-surface"
           style={{ height: consoleHeight }}
         >
-          <div className="flex h-7 items-center border-b border-border px-3">
-            <span className="text-[10px] font-medium uppercase tracking-wider text-muted">
-              {messages.app.console}
-            </span>
-          </div>
-          <div className="h-[calc(100%-1.75rem)]">
+          <PaneHeader title={messages.app.console} compact />
+          <div className="min-h-0 flex-1">
             <Console lines={consoleLines} />
           </div>
         </div>

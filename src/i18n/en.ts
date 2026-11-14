@@ -9,7 +9,8 @@ const en: Messages = {
     runSimulation: 'Run simulation',
     running: 'Running…',
     waveform: 'Waveform',
-    waveformPts: (points, signals) => `${points} pts · ${signals} signals`,
+    waveformPts: (points, signals) =>
+      `${signals} signals · ${points.toLocaleString('en-US')} points`,
     console: 'Console',
     logSimStart: '> Starting simulation…',
     logSimComplete: (traces, points, dataType) =>

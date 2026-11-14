@@ -2,34 +2,43 @@
 @import 'uplot/dist/uPlot.min.css';
 
 @theme {
-  /* Agile-X brand — https://www.agile-x.t.u-tokyo.ac.jp/ */
-  --font-sans: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
+  /* Agile-X brand — https://www.agile-x.t.u-tokyo.ac.jp/
+     デザイン方針は .impeccable.md（親しみやすい・確か・落ち着いた）。
+     ニュートラルはすべてネイビー寄りに色味をつけ、純粋な白黒は使わない。 */
+  --font-sans: 'Noto Sans JP', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', 'Noto Sans JP', ui-monospace, monospace;
 
   --color-ax-navy: #002137;
-  --color-ax-navy-muted: #003a5c;
+  --color-ax-navy-muted: #0d3b5c;
   --color-ax-blue: #187fc4;
-  --color-ax-blue-light: #388fca;
+  --color-ax-blue-light: #2f8fd0;
   --color-ax-gold: #f8bb00;
-  --color-ax-gold-light: #ffc100;
+  --color-ax-gold-light: #ffc61a;
 
-  --color-surface: #ffffff;
-  --color-surface-muted: #f5f7fa;
-  --color-surface-raised: #ededed;
-  --color-surface-inset: #fafbfc;
-  --color-border: #d9d9d9;
-  --color-border-strong: #999999;
+  /* 面: 紙（surface）と、その下の机（muted） */
+  --color-surface: #fdfeff;
+  --color-surface-muted: #f2f5f8;
+  --color-surface-raised: #e6ecf2;
+  --color-surface-inset: #f7f9fb;
+  /* 罫線: hairline は区切り、border は入力欄の枠 */
+  --color-hairline: #e1e7ed;
+  --color-border: #cfd8e1;
+  --color-border-strong: #94a3b2;
 
-  --color-foreground: #333333;
-  --color-muted: #666666;
-  --color-muted-light: #888888;
+  /* 文字: ネイビーのインク */
+  --color-foreground: #1b2a38;
+  --color-muted: #4c5b6a;
+  --color-muted-light: #687787;
 
+  /* 意味の色: 操作 = ブルー、選択・注意 = ゴールド、成功 = グリーン、エラー = 赤 */
   --color-accent: #187fc4;
-  --color-accent-hover: #388fca;
+  --color-accent-hover: #2f8fd0;
+  --color-accent-ink: #105f95;
   --color-highlight: #f8bb00;
+  --color-highlight-ink: #7a5900;
   --color-success: #037b4e;
   --color-danger: #c0392b;
-  --color-on-navy: #ffffff;
+  --color-on-navy: #f7fafc;
 }
 
 * {
@@ -45,19 +54,50 @@ body,
 
 body {
   font-family: var(--font-sans);
+  /* 和文の約物を詰めて、UI のラベルを締まって見せる */
+  font-feature-settings: 'palt' 1;
   background: var(--color-surface-muted);
   color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
 }
 
+/* 等幅（数値・ネットリスト・ログ）は約物詰めをしない */
+.font-mono,
+code,
+pre {
+  font-feature-settings: normal;
+}
+
+/* キーボード操作の位置を必ず見せる（マウス操作では出さない） */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #b0b0b0;
-  border-radius: 4px;
+  background: #c3cdd7;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b2;
 }
 
 ::-webkit-scrollbar-track {
@@ -111,7 +151,26 @@ body {
 }
 
 .react-flow__minimap {
-  border-radius: 8px;
+  border-radius: 4px;
+}
+
+/* キャンバス上の操作ボタン: 影ではなく罫線で区切る */
+.react-flow__controls {
+  box-shadow: none;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.react-flow__controls-button {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-hairline);
+  color: var(--color-muted);
+}
+
+.react-flow__controls-button:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-foreground);
 }
 
 /* --- 回路図: ピン・接続点（xschem / Undine 風） --- */

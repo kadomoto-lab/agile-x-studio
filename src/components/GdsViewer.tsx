@@ -28,11 +28,11 @@ type DownloadKind = 'preview' | 'fab'
 
 /** Sync Layout より控えめなセカンダリツールバーボタン */
 const TOOLBAR_BTN =
-  'flex items-center gap-1.5 rounded-lg border border-border bg-surface-muted px-2 py-1 text-[11px] font-medium text-muted transition-colors hover:border-accent/30 hover:bg-surface hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40'
+  'flex h-7 items-center gap-1.5 rounded-md border border-border bg-surface px-2 text-[12px] font-medium text-muted transition-colors hover:border-border-strong hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40'
 
 /** キャンバス上に重ねる小さなボタン */
 const CANVAS_BTN =
-  'flex h-7 w-7 items-center justify-center rounded-md border border-white/15 bg-black/60 text-white/80 transition-colors hover:bg-black/80 hover:text-white'
+  'flex h-8 w-8 items-center justify-center rounded-md border border-on-navy/15 bg-ax-navy/85 text-on-navy/80 transition-colors hover:bg-ax-navy hover:text-on-navy'
 
 /** 拡大の上限: 1 CSS ピクセルあたり 0.005 µm */
 const MIN_SCALE_UM = 0.005
@@ -427,9 +427,9 @@ export function GdsViewer({ revision = 0 }: GdsViewerProps) {
 
   return (
     <div className="relative flex h-full min-h-0 flex-col bg-surface-muted">
-      <div className="flex h-9 shrink-0 items-center justify-end gap-2 border-b border-border bg-surface px-2">
+      <div className="flex h-10 shrink-0 items-center justify-end gap-2 border-b border-hairline bg-surface px-2">
         {actionError && (
-          <span className="mr-auto max-w-[280px] truncate text-[10px] text-danger">
+          <span className="mr-auto max-w-[280px] truncate text-[11px] text-danger" title={actionError}>
             {actionError}
           </span>
         )}
@@ -511,7 +511,7 @@ export function GdsViewer({ revision = 0 }: GdsViewerProps) {
         />
 
         {!info && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-xs text-white/70">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-[13px] text-on-navy/75">
             {loadError ? (
               <span className="max-w-[80%] text-center text-danger">
                 {messages.gds.viewFailed(loadError)}
@@ -537,7 +537,7 @@ export function GdsViewer({ revision = 0 }: GdsViewerProps) {
           </button>
           <button
             type="button"
-            className={`${CANVAS_BTN} ${showLayers ? '!bg-accent/80 !text-white' : ''}`}
+            className={`${CANVAS_BTN} ${showLayers ? '!bg-accent !text-on-navy' : ''}`}
             title={messages.gds.layers}
             aria-pressed={showLayers}
             onClick={() => setShowLayers((v) => !v)}
@@ -547,14 +547,14 @@ export function GdsViewer({ revision = 0 }: GdsViewerProps) {
         </div>
 
         {showLayers && info && (
-          <div className="absolute right-11 top-2 max-h-[calc(100%-1rem)] w-56 overflow-auto rounded-lg border border-white/15 bg-black/75 p-2 text-[11px] text-white/85 backdrop-blur">
-            <div className="mb-1 px-1 text-[10px] font-semibold uppercase tracking-wide text-white/50">
+          <div className="absolute right-11 top-2 max-h-[calc(100%-1rem)] w-60 overflow-auto rounded-md border border-on-navy/15 bg-ax-navy/95 p-2 text-[12px] text-on-navy/90">
+            <div className="mb-1 px-1 text-[11px] font-semibold text-on-navy/60">
               {messages.gds.layers}
             </div>
             {info.layers.map((layer) => (
               <label
                 key={layer.id}
-                className="flex cursor-pointer items-center gap-2 rounded px-1 py-0.5 hover:bg-white/10"
+                className="flex cursor-pointer items-center gap-2 rounded px-1 py-1 hover:bg-on-navy/10"
               >
                 <input
                   type="checkbox"
@@ -567,18 +567,18 @@ export function GdsViewer({ revision = 0 }: GdsViewerProps) {
                   className="h-4 w-7 shrink-0 rounded-sm"
                 />
                 <span className="min-w-0 flex-1 truncate">{layer.name}</span>
-                <span className="font-mono text-[10px] text-white/45">{layer.source}</span>
+                <span className="font-mono text-[11px] text-on-navy/50">{layer.source}</span>
               </label>
             ))}
           </div>
         )}
 
-        <div className="pointer-events-none absolute bottom-2 left-2 flex items-end gap-3 font-mono text-[10px] text-white/80">
+        <div className="pointer-events-none absolute bottom-2 left-2 flex items-end gap-3 font-mono text-[11px] text-on-navy/85">
           {scaleBar && (
             <div className="flex flex-col items-start">
               <span>{scaleBar.label}</span>
               <span
-                className="mt-0.5 block h-1.5 border-x border-b border-white/80"
+                className="mt-0.5 block h-1.5 border-x border-b border-on-navy/80"
                 style={{ width: `${scaleBar.px}px` }}
               />
             </div>

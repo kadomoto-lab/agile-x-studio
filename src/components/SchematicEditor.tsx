@@ -367,7 +367,7 @@ function SchematicCanvas({
         }}
       >
         {wiringFrom && (
-          <div className="pointer-events-none absolute left-1/2 top-2 z-10 -translate-x-1/2 rounded-md border border-accent/40 bg-surface/95 px-2.5 py-1 text-[10px] text-accent shadow-sm">
+          <div className="pointer-events-none absolute left-1/2 top-2 z-10 -translate-x-1/2 rounded-md border border-accent/40 bg-surface px-2.5 py-1 text-[12px] text-accent-ink">
             {messages.design.wiringHint}
           </div>
         )}
@@ -404,17 +404,17 @@ function SchematicCanvas({
           className="bg-surface-muted"
           proOptions={{ hideAttribution: true }}
         >
-          <Background color="#d9d9d9" gap={GRID * 2} size={1} />
-          <Controls
-            className="!border-border !bg-surface !shadow-lg [&>button]:!border-border [&>button]:!bg-surface-muted [&>button]:!text-muted [&>button:hover]:!bg-surface-raised"
-          />
+          <Background color="#c9d3dd" gap={GRID * 2} size={1} />
+          <Controls />
           <MiniMap
-            className="!border-border !bg-surface"
+            className="!border !border-hairline !bg-surface"
+            // 狭い画面でも回路図を隠さないよう小さめにする
+            style={{ width: 120, height: 84 }}
             nodeColor={(n) => {
               const kind = (n.data as CircuitNode['data']).kind
-              if (kind === 'ground') return '#666666'
+              if (kind === 'ground') return '#4c5b6a'
               if (kind === 'vdd') return '#c0392b'
-              if (kind === 'net_label') return '#888888'
+              if (kind === 'net_label') return '#94a3b2'
               return '#187fc4'
             }}
           />

@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import uPlot from 'uplot'
-import type { WaveformData, WaveformTrace } from '../lib/waveform'
+import {
+  formatSiTicks,
+  traceUnit,
+  type WaveformData,
+  type WaveformTrace,
+} from '../lib/waveform'
 import { messages } from '../i18n'
 
 const WAVE_SYNC_KEY = 'agilex-waveform'
@@ -26,30 +31,27 @@ function SimulatingOverlay({ compact }: { compact?: boolean }) {
   )
 }
 
-function formatAxisValue(v: number): string {
-  const abs = Math.abs(v)
-  if (abs === 0) return '0'
-  if (abs >= 1e6 || abs < 1e-3) return v.toExponential(2)
-  if (abs >= 100) return v.toFixed(1)
-  return v.toPrecision(4)
-}
-
+// 目盛りは等幅の数字で、ネイビー寄りの控えめな色にする（src/index.css のトークンと同じ値）
+const AXIS_FONT = '11px "IBM Plex Mono", ui-monospace, monospace'
 const AXIS_OPTS = {
-  stroke: '#666666',
-  grid: { stroke: '#d9d9d9', width: 1 },
-  values: (_u: uPlot, ticks: number[]) => ticks.map(formatAxisValue),
+  stroke: '#4c5b6a',
+  font: AXIS_FONT,
+  grid: { stroke: '#e1e7ed', width: 1 },
+  ticks: { stroke: '#cfd8e1', width: 1, size: 4 },
 }
 
 function TracePane({
   x,
   trace,
   xLabel,
+  xUnit,
   xMin,
   xMax,
 }: {
   x: number[]
   trace: WaveformTrace
   xLabel: string
+  xUnit: string
   xMin: number
   xMax: number
 }) {
@@ -77,8 +79,18 @@ function TracePane({
           x: { time: false, min: xMin, max: xMax },
         },
         axes: [
-          { ...AXIS_OPTS, size: 36, grid: { ...AXIS_OPTS.grid, show: true } },
-          { ...AXIS_OPTS, stroke: trace.color, size: 50, grid: { show: false } },
+          {
+            ...AXIS_OPTS,
+            size: 30,
+            grid: { ...AXIS_OPTS.grid, show: true },
+            values: (_u: uPlot, ticks: number[]) => formatSiTicks(ticks, xUnit),
+          },
+          {
+            ...AXIS_OPTS,
+            size: 64,
+            grid: { ...AXIS_OPTS.grid, show: true },
+            values: (_u: uPlot, ticks: number[]) => formatSiTicks(ticks, traceUnit(trace.name)),
+          },
         ],
         legend: { show: false },
         cursor: {
@@ -88,7 +100,7 @@ function TracePane({
             scales: ['x', null],
           },
         },
-        padding: [8, 8, 0, 8],
+        padding: [6, 28, 0, 4],
       },
       [x, trace.values],
       container,
@@ -108,7 +120,7 @@ function TracePane({
       plot.destroy()
       plotRef.current = null
     }
-  }, [x, trace, xLabel, xMin, xMax])
+  }, [x, trace, xLabel, xUnit, xMin, xMax])
 
   return <div ref={containerRef} className="min-h-0 flex-1" />
 }
@@ -163,24 +175,29 @@ export function WaveformViewer({ waveform, simulating }: WaveformViewerProps) {
     }
 
     return (
-      <div className="flex h-full flex-col items-center justify-center gap-3 text-muted">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-surface-muted">
-          <svg
-            className="h-8 w-8 opacity-50"
-            fill="none"
-            viewBox="0 0 24 24"
+      <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-muted">
+        {/* 方眼の上に方形波を描いた見本（ここに波形が出ることを示す） */}
+        <svg
+          aria-hidden
+          className="mb-2 h-16 w-44 text-border-strong"
+          viewBox="0 0 176 64"
+          fill="none"
+        >
+          <path
+            d="M0 16h176M0 32h176M0 48h176M44 0v64M88 0v64M132 0v64"
+            stroke="var(--color-hairline)"
+          />
+          <path
+            d="M4 48h28v-32h40v32h40v-32h40v32h20"
             stroke="currentColor"
-            strokeWidth={1.5}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 13h2l3-9 4 18 3-9h2"
-            />
-          </svg>
-        </div>
-        <p className="text-sm font-medium">{messages.waveform.emptyTitle}</p>
-        <p className="max-w-xs text-center text-xs">
+            strokeWidth={1.75}
+            strokeLinejoin="round"
+          />
+        </svg>
+        <p className="text-[14px] font-semibold text-foreground">
+          {messages.waveform.emptyTitle}
+        </p>
+        <p className="max-w-xs text-center text-[12.5px] leading-relaxed">
           {messages.waveform.emptyHint}
         </p>
       </div>
@@ -189,7 +206,7 @@ export function WaveformViewer({ waveform, simulating }: WaveformViewerProps) {
 
   return (
     <div className="relative flex h-full min-h-0 flex-col" aria-busy={simulating}>
-      <div className="flex flex-wrap gap-2 border-b border-border px-4 py-2">
+      <div className="flex max-h-[40%] flex-wrap gap-1.5 overflow-y-auto border-b border-hairline px-3 py-2">
         {waveform.traces.map((trace) => {
           const isOn = visible.has(trace.name)
           return (
@@ -197,15 +214,22 @@ export function WaveformViewer({ waveform, simulating }: WaveformViewerProps) {
               key={trace.name}
               type="button"
               onClick={() => toggleTrace(trace.name)}
-              className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
+              aria-pressed={isOn}
+              className={`flex h-6 items-center gap-1.5 rounded-md border px-2 font-mono text-[11.5px] transition-colors ${
                 isOn
-                  ? 'border-accent/40 bg-accent/10 text-foreground'
-                  : 'border-border bg-transparent text-muted'
+                  ? 'border-border bg-surface text-foreground hover:border-border-strong'
+                  : 'border-transparent bg-transparent text-muted-light hover:text-muted'
               }`}
             >
+              {/* 凡例と同じく、線の見本で色を示す（非表示は中抜き） */}
               <span
-                className="h-2 w-2 rounded-full"
-                style={{ backgroundColor: isOn ? trace.color : '#cccccc' }}
+                aria-hidden
+                className="h-0.5 w-3 rounded-full"
+                style={
+                  isOn
+                    ? { backgroundColor: trace.color }
+                    : { boxShadow: 'inset 0 0 0 1px var(--color-border-strong)', height: 4 }
+                }
               />
               {trace.name}
             </button>
@@ -213,22 +237,25 @@ export function WaveformViewer({ waveform, simulating }: WaveformViewerProps) {
         })}
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-2">
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-2 pb-2">
         {activeTraces.map((trace) => (
           <div
             key={trace.name}
-            className="flex min-h-[88px] flex-1 flex-col border-b border-border/60 last:border-b-0"
+            className="flex min-h-[96px] flex-1 flex-col border-b border-hairline pt-1.5 last:border-b-0"
           >
-            <div
-              className="shrink-0 px-1 font-mono text-[10px] font-semibold"
-              style={{ color: trace.color }}
-            >
+            <div className="flex shrink-0 items-center gap-1.5 px-1 font-mono text-[11px] font-medium text-foreground">
+              <span
+                aria-hidden
+                className="h-0.5 w-3 rounded-full"
+                style={{ backgroundColor: trace.color }}
+              />
               {trace.name}
             </div>
             <TracePane
               x={waveform.x}
               trace={trace}
               xLabel={waveform.xLabel}
+              xUnit={waveform.xUnit}
               xMin={xRange.min}
               xMax={xRange.max}
             />
@@ -237,7 +264,7 @@ export function WaveformViewer({ waveform, simulating }: WaveformViewerProps) {
       </div>
 
       {simulating && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface/80 backdrop-blur-[1px]">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface/85">
           <SimulatingOverlay compact />
         </div>
       )}
