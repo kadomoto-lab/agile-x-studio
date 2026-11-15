@@ -30,9 +30,10 @@
   <img src="docs/images/en/app-ring.png" alt="Schematic of the 31-stage ring oscillator and its simulated waveforms" width="100%">
 </p>
 
-Agile-X Studio is an app for designing and checking digital circuits for the Agile-X gate array in the browser.
-Schematic, netlist, waveforms and layout share one screen, and a circuit you draw goes all the way to a GDS file for
-fabrication.
+Agile-X Studio is an app for designing and checking circuits for the Agile-X gate array in the browser. Beyond logic
+gates, you can simulate circuits that use the base cell's transistors directly, or that include resistors, capacitors
+and other parts. Schematic, netlist, waveforms and layout share one screen, and a circuit built from gates and base
+cells goes all the way to a GDS file for fabrication.
 
 ## Features
 

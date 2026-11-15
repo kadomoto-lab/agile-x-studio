@@ -1,6 +1,8 @@
 # Overview
 
-Agile-X Studio is an app for designing and checking digital circuits for the [Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/en/) gate array in the browser.
+Agile-X Studio is an app for designing and checking circuits for the [Agile-X](https://www.agile-x.t.u-tokyo.ac.jp/en/) gate array in the browser.
+Beyond logic gates, you can simulate circuits that use the base cell's transistors directly, or that include
+resistors, capacitors and other parts. The gates and base cells are what gets placed and routed on the gate array.
 It shows one circuit in three views.
 
 | View | What it is for |
