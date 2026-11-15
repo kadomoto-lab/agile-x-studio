@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
-import { ChevronDown, Play, Loader2 } from 'lucide-react'
+import { ChevronDown, Play, Loader2, Download } from 'lucide-react'
 import { DesignPane } from './components/DesignPane'
 import { WaveformViewer } from './components/WaveformViewer'
 import { Console } from './components/Console'
@@ -8,6 +8,7 @@ import { LanguageToggle } from './components/LanguageToggle'
 import { PaneHeader } from './components/PaneHeader'
 import { initEngine, runNetlist, type RunResult } from './lib/simulation'
 import { resultToWaveform, waveformLabels } from './lib/waveform'
+import { downloadWaveformCsv } from './lib/waveformCsv'
 import { useCircuitProject } from './hooks/useCircuitProject'
 import { messages, useLocale } from './i18n'
 import { SAMPLE_IDS, type SampleId } from './samples/circuits'
@@ -211,6 +212,15 @@ export default function App() {
     layoutSyncedNetlist === null ||
     project.netlist !== layoutSyncedNetlist
 
+  const downloadWaveform = () => {
+    if (!simResult || isSimulating) return
+    try {
+      downloadWaveformCsv(simResult)
+    } catch {
+      appendLog(`ERROR: ${messages.waveform.downloadFailed}`)
+    }
+  }
+
   return (
     <div className="flex h-full flex-col bg-surface-muted">
       <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-ax-navy-muted bg-ax-navy pl-3 pr-4">
@@ -224,13 +234,14 @@ export default function App() {
           <span aria-hidden className="h-6 w-px shrink-0 bg-on-navy/15" />
           <label className="flex min-w-0 items-center gap-2">
             <span className="shrink-0 text-xs text-on-navy/70">
-              {messages.app.sampleCircuit}
+              {project.sampleId === null ? messages.app.circuit : messages.app.sampleCircuit}
             </span>
-            <span className="relative min-w-0">
+            <span className="relative min-w-0 max-w-[28rem]">
               <select
-                value={project.sampleId}
+                value={project.sampleId ?? 'imported'}
                 disabled={isBusy}
                 onChange={(e) => {
+                  if (!SAMPLE_IDS.includes(e.target.value as SampleId)) return
                   const id = e.target.value as SampleId
                   if (id === project.sampleId) return
                   project.loadSample(id)
@@ -240,6 +251,11 @@ export default function App() {
                 }}
                 className="h-8 max-w-full appearance-none truncate rounded-md border border-on-navy/15 bg-on-navy/5 pl-2.5 pr-8 text-[13px] text-on-navy outline-none transition-colors hover:bg-on-navy/10 focus-visible:border-ax-blue disabled:opacity-40 [&>option]:bg-surface [&>option]:text-foreground"
               >
+                {project.sampleId === null && (
+                  <option value="imported" disabled>
+                    {project.schematicFileName?.replace(/\.json$/i, '') || project.schematicFileName}
+                  </option>
+                )}
                 {SAMPLE_IDS.map((id) => (
                   <option key={id} value={id}>
                     {sampleLabel(id)}
@@ -286,6 +302,9 @@ export default function App() {
               schematic={project.schematic}
               schematicRevision={project.importRevision}
               onSchematicChange={project.onSchematicChange}
+              onSchematicImport={project.importSchematic}
+              schematicFileName={project.schematicFileName}
+              onSchematicFileSaved={project.setSchematicFileName}
               onSchematicUndo={project.undoSchematic}
               onSchematicRedo={project.redoSchematic}
               netlist={project.netlist}
@@ -326,6 +345,15 @@ export default function App() {
                   )}
                 </span>
               )}
+              <button
+                type="button"
+                onClick={downloadWaveform}
+                disabled={!simResult || isSimulating}
+                className="flex h-7 shrink-0 items-center gap-1.5 rounded-md border border-accent/45 bg-surface px-2.5 text-[12px] font-semibold text-accent-ink transition-colors hover:border-accent hover:bg-accent/[0.06] disabled:cursor-not-allowed disabled:opacity-45"
+              >
+                <Download className="h-3.5 w-3.5" />
+                {messages.waveform.downloadCsv}
+              </button>
             </PaneHeader>
             <div className="min-h-0 flex-1">
               <WaveformViewer waveform={waveform} simulating={isSimulating} />

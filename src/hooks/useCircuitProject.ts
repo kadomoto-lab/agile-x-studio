@@ -32,7 +32,8 @@ function netlistOf(doc: SchematicDocument): string | null {
 }
 
 export function useCircuitProject() {
-  const [sampleId, setSampleId] = useState<SampleId>(DEFAULT_SAMPLE_ID)
+  const [sampleId, setSampleId] = useState<SampleId | null>(DEFAULT_SAMPLE_ID)
+  const [schematicFileName, setSchematicFileName] = useState<string | null>(null)
   const [schematic, setSchematicState] = useState<SchematicDocument>(DEFAULT_SCHEMATIC)
   const [netlist, setNetlist] = useState(DEFAULT_NETLIST)
   const [designTab, setDesignTab] = useState<DesignTab>('schematic')
@@ -140,11 +141,19 @@ export function useCircuitProject() {
     setNetlistSource('schematic')
   }, [])
 
+  const importSchematic = useCallback((doc: SchematicDocument, fileName: string) => {
+    onSchematicChange(doc, { before: schematicRef.current })
+    setSampleId(null)
+    setSchematicFileName(fileName)
+    setImportRevision((r) => r + 1)
+  }, [onSchematicChange])
+
   const loadSample = useCallback(
     (id: SampleId) => {
       const generated = buildSampleNetlist(id)
       const imported = netlistToSchematic(generated)
       setSampleId(id)
+      setSchematicFileName(null)
       netlistRef.current = generated
       setNetlist(generated)
       setNetlistSource('schematic')
@@ -162,6 +171,8 @@ export function useCircuitProject() {
 
   return {
     sampleId,
+    schematicFileName,
+    setSchematicFileName,
     schematic,
     netlist,
     designTab,
@@ -174,6 +185,7 @@ export function useCircuitProject() {
     redoSchematic,
     onNetlistChange,
     saveFromSchematic,
+    importSchematic,
     loadSample,
   }
 }

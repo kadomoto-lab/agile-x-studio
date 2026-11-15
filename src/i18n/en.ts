@@ -21,6 +21,7 @@ const en: Messages = {
       `ERROR: Server-side simulator unavailable — ${detail}`,
     logSchematicSynced: '> Synced schematic to netlist & layout',
     sampleCircuit: 'Sample circuit',
+    circuit: 'Circuit',
     sampleRing31: '31-stage ring oscillator',
     sampleInv2Pulse: '2× INV + pulse input',
     sampleAdder4: '4-bit adder (36× NAND2, 2 rows)',
@@ -36,6 +37,15 @@ const en: Messages = {
     modified: 'modified',
     syncToNetlistAndLayout: 'Sync to Netlist & Layout',
     syncLayout: 'Sync Layout',
+    saveSchematic: 'Save locally',
+    fileName: 'File name',
+    cancel: 'Cancel',
+    confirmSave: 'Save',
+    importSchematic: 'Load file',
+    importSchematicHint: 'Load a saved schematic, then use the sync button to update the netlist and layout. Undo restores the previous schematic.',
+    schematicFileInvalid: 'This schematic file is unsupported or damaged.',
+    schematicExportFailed: 'Could not save the schematic.',
+    schematicImportFailed: 'Could not read the schematic file.',
     wiringHint: 'Click a pin or wire to connect · Esc / right-click / double-click to cancel',
   },
 
@@ -70,6 +80,8 @@ const en: Messages = {
   },
 
   waveform: {
+    downloadCsv: 'Download CSV',
+    downloadFailed: 'Could not download the waveform CSV.',
     emptyTitle: 'Waveforms appear here',
     emptyHint:
       'Edit the netlist on the left, then press “Run simulation”',

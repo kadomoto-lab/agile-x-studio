@@ -79,6 +79,16 @@ With nothing selected, the panel shows the circuit's settings:
 
 Consecutive edits of the same kind (such as typing in a property, one character at a time) undo as one step.
 
+## Save locally and import
+
+In the Schematic tab, click **Save locally**, enter a file name and click **Save** to download a `.json` file. The file includes component types, positions, properties, wire connections, the circuit title and analysis settings. You can save unfinished diagrams before syncing. The location follows your browser’s download settings. To choose a folder, enable the browser option to ask where to save downloads.
+
+Click **Load file** and select a saved file to replace the current schematic and fit it in view. Undo (Ctrl+Z / ⌘Z) restores the previous diagram. Unsupported or damaged files display an error and leave the current diagram unchanged.
+
+The circuit title in the saved JSON is the file name without `.json`.
+
+After importing, click **Sync to Netlist & Layout** to update the netlist and layout. Saved schematic files do not include handwritten netlists, simulation results or generated GDS files.
+
 ## Keeping the schematic and netlist in step
 
 You can edit either the schematic or the netlist.

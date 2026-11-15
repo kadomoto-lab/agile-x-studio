@@ -21,6 +21,7 @@ const ja: Messages = {
       `ERROR: サーバ側シミュレータを利用できません — ${detail}`,
     logSchematicSynced: '> ブロック図をネットリストとレイアウトに同期しました',
     sampleCircuit: 'サンプル回路',
+    circuit: '回路',
     sampleRing31: '31段リングオシレータ',
     sampleInv2Pulse: '2段INV + 矩形波入力',
     sampleAdder4: '4ビット加算器（NAND2×36・2行配置）',
@@ -36,6 +37,15 @@ const ja: Messages = {
     modified: '変更あり',
     syncToNetlistAndLayout: 'ネットリストとレイアウトに反映',
     syncLayout: 'レイアウトを同期',
+    saveSchematic: 'ローカルに保存',
+    fileName: 'ファイル名',
+    cancel: 'キャンセル',
+    confirmSave: '保存',
+    importSchematic: 'ファイルを読み込む',
+    importSchematicHint: '保存したブロック図を読み込みます。ネットリストとレイアウトへの反映は同期ボタンで行ってください。取り消しで元の図に戻せます。',
+    schematicFileInvalid: '対応するブロック図ファイルではないか、内容が破損しています。',
+    schematicExportFailed: 'ブロック図を保存できませんでした。',
+    schematicImportFailed: 'ブロック図ファイルを読み込めませんでした。',
     wiringHint: 'ピンまたは配線をクリックで接続 · Esc / 右クリック / ダブルクリックで中止',
   },
 
@@ -70,6 +80,8 @@ const ja: Messages = {
   },
 
   waveform: {
+    downloadCsv: 'CSVダウンロード',
+    downloadFailed: '波形のCSVをダウンロードできませんでした。',
     emptyTitle: '波形はここに表示されます',
     emptyHint:
       '左のネットリストを編集し、「シミュレーション実行」を押してください',
