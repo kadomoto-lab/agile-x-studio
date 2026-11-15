@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import { LayoutGrid, FileCode2, Save, Layers, Loader2 } from 'lucide-react'
+import { useRef, useState, type ChangeEvent } from 'react'
+import { LayoutGrid, FileCode2, Save, Layers, Loader2, Download, FolderOpen } from 'lucide-react'
 import { CodeEditor } from './CodeEditor'
 import { SchematicEditor } from './SchematicEditor'
 import { GdsViewer } from './GdsViewer'
 import type { SchematicDocument } from '../schematic/types'
 import type { SchematicUndoPoint } from '../hooks/useCircuitProject'
 import { schematicToNetlist } from '../schematic/netlist'
+import { parseSchematicFile, schematicFilename, SchematicFileError } from '../schematic/file'
+import { downloadSchematic } from '../schematic/saveFile'
 import { syncLayout } from '../lib/layoutApi'
 import { messages } from '../i18n'
 
@@ -18,6 +20,9 @@ type DesignPaneProps = {
   /** 回路図を取り込み直すたびに増える。変わると全体表示に戻す */
   schematicRevision: number
   onSchematicChange: (doc: SchematicDocument, undo?: SchematicUndoPoint) => void
+  onSchematicImport: (doc: SchematicDocument, fileName: string) => void
+  schematicFileName: string | null
+  onSchematicFileSaved: (fileName: string) => void
   onSchematicUndo: () => void
   onSchematicRedo: () => void
   netlist: string
@@ -36,6 +41,9 @@ export function DesignPane({
   schematic,
   schematicRevision,
   onSchematicChange,
+  onSchematicImport,
+  schematicFileName,
+  onSchematicFileSaved,
   onSchematicUndo,
   onSchematicRedo,
   netlist,
@@ -49,6 +57,48 @@ export function DesignPane({
 }: DesignPaneProps) {
   const [saveError, setSaveError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const [exportName, setExportName] = useState('')
+  const [fileError, setFileError] = useState<string | null>(null)
+  const fileInput = useRef<HTMLInputElement>(null)
+  const saveDialog = useRef<HTMLDialogElement>(null)
+
+  const handleExport = () => {
+    setFileError(null)
+    setExportName(schematicFilename(schematicFileName ?? schematic.title))
+    saveDialog.current?.showModal()
+  }
+
+  const handleDownload = () => {
+    try {
+      const name = schematicFilename(exportName)
+      downloadSchematic(schematic, name)
+      onSchematicFileSaved(name)
+      saveDialog.current?.close()
+    } catch {
+      saveDialog.current?.close()
+      setFileError(messages.design.schematicExportFailed)
+    }
+  }
+
+  const handleImport = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+    setImporting(true)
+    setFileError(null)
+    try {
+      const doc = parseSchematicFile(await file.text())
+      onSchematicImport(doc, file.name)
+      setSaveError(null)
+    } catch (error) {
+      setFileError(error instanceof SchematicFileError
+        ? messages.design.schematicFileInvalid
+        : messages.design.schematicImportFailed)
+    } finally {
+      setImporting(false)
+    }
+  }
 
   const runLayoutSync = async (netlistText: string) => {
     const layout = await syncLayout(netlistText)
@@ -126,7 +176,7 @@ export function DesignPane({
             )}
             <button
               type="button"
-              disabled={readOnly || saving}
+              disabled={readOnly || saving || importing}
               onClick={() => void handleSaveFromSchematic()}
               className={SECONDARY_BTN}
             >
@@ -149,7 +199,7 @@ export function DesignPane({
             )}
             <button
               type="button"
-              disabled={readOnly || saving}
+              disabled={readOnly || saving || importing}
               onClick={() => void handleSyncLayoutFromNetlist()}
               className={SECONDARY_BTN}
             >
@@ -163,6 +213,57 @@ export function DesignPane({
           </div>
         )}
       </div>
+
+      {activeTab === 'schematic' && (
+        <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-hairline bg-surface px-3 py-1.5">
+          <button type="button" className={SECONDARY_BTN} onClick={handleExport} disabled={importing}>
+            <Download className="h-3.5 w-3.5" />
+            {messages.design.saveSchematic}
+          </button>
+          <button
+            type="button"
+            className={SECONDARY_BTN}
+            onClick={() => fileInput.current?.click()}
+            disabled={readOnly || saving || importing}
+            title={messages.design.importSchematicHint}
+          >
+            {importing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <FolderOpen className="h-3.5 w-3.5" />}
+            {messages.design.importSchematic}
+          </button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept=".json,application/json"
+            aria-label={messages.design.importSchematic}
+            className="hidden"
+            onChange={(event) => void handleImport(event)}
+            disabled={readOnly || saving || importing}
+          />
+          {fileError && <span role="alert" className="text-[11px] text-danger">{fileError}</span>}
+          <dialog
+            ref={saveDialog}
+            aria-label={messages.design.saveSchematic}
+            className="m-auto w-[min(420px,calc(100%-2rem))] rounded-lg border border-hairline bg-surface p-5 text-foreground shadow-xl backdrop:bg-black/40"
+          >
+            <form onSubmit={(event) => { event.preventDefault(); handleDownload() }}>
+              <label className="block text-xs">
+                {messages.design.fileName}
+                <input
+                  autoFocus
+                  required
+                  value={exportName}
+                  onChange={(event) => setExportName(event.target.value)}
+                  className="mt-1.5 h-9 w-full rounded-md border border-hairline bg-surface px-2.5 text-sm outline-none focus:border-accent"
+                />
+              </label>
+              <div className="mt-5 flex justify-end gap-2">
+                <button type="button" className={SECONDARY_BTN} onClick={() => saveDialog.current?.close()}>{messages.design.cancel}</button>
+                <button type="submit" className={SECONDARY_BTN} disabled={!exportName.trim()}>{messages.design.confirmSave}</button>
+              </div>
+            </form>
+          </dialog>
+        </div>
+      )}
 
       <div className="min-h-0 flex-1">
         {activeTab === 'schematic' && (

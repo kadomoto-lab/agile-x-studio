@@ -19,6 +19,7 @@ export type Messages = {
     logEngineInitFailed: (detail: string) => string
     logSchematicSynced: string
     sampleCircuit: string
+    circuit: string
     sampleRing31: string
     sampleInv2Pulse: string
     sampleAdder4: string
@@ -34,6 +35,15 @@ export type Messages = {
     modified: string
     syncToNetlistAndLayout: string
     syncLayout: string
+    saveSchematic: string
+    fileName: string
+    cancel: string
+    confirmSave: string
+    importSchematic: string
+    importSchematicHint: string
+    schematicFileInvalid: string
+    schematicExportFailed: string
+    schematicImportFailed: string
     wiringHint: string
   }
 
@@ -67,6 +77,8 @@ export type Messages = {
   }
 
   waveform: {
+    downloadCsv: string
+    downloadFailed: string
     emptyTitle: string
     emptyHint: string
     simulating: string

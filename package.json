@@ -22,6 +22,8 @@
     "docs:serve": "uv run --only-group docs mkdocs serve -a 127.0.0.1:8001",
     "docs:build": "uv run --only-group docs mkdocs build --strict",
     "test:ga": "uv run python server/test_ga_layout.py",
+    "test:schematic-file": "node scripts/test-schematic-file.mjs",
+    "test:waveform-csv": "node scripts/test-waveform-csv.mjs",
     "preview": "vite preview",
     "preview:en": "vite preview --outDir dist-en"
   },

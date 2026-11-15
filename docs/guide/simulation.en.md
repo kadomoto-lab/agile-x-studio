@@ -24,6 +24,10 @@ While a simulation runs you can keep working, for example sync the layout.
 - These signals are left out: `v(vdd)`, `v(0)`, the current of the VDD source, and signals that never change.
 - `.ac` results show the magnitude of the complex values.
 
+## Download CSV
+
+Click **Download CSV** in the waveform header to save the results as `waveform.csv`. The export includes all signals and data points returned by the server, regardless of visibility or zoom. Column names include units. AC results preserve the real (`.real`) and imaginary (`.imag`) components in separate columns.
+
 ## Points and time limit
 
 | Setting | Default | Change it with |
