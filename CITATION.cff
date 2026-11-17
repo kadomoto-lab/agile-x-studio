@@ -1,0 +1,78 @@
+cff-version: 1.2.0
+type: software
+message: >-
+  If you use Agile-X Studio in your research, please cite the paper below.
+title: Agile-X Studio
+abstract: >-
+  A browser-based circuit design, simulation and layout environment for the
+  Agile-X gate array.
+authors:
+  - name: kadomoto-lab
+license: MIT
+repository-code: https://github.com/kadomoto-lab/agile-x-studio
+url: https://kadomoto-lab.github.io/agile-x-studio/
+keywords:
+  - circuit design
+  - prototyping
+  - application-specific integrated circuit (ASIC)
+  - gate array
+preferred-citation:
+  type: conference-paper
+  title: >-
+    Designing Chips in the Browser: Democratizing ASIC Prototyping with Gate
+    Arrays
+  authors:
+    - family-names: Kadomoto
+      given-names: Junichiro
+    - family-names: Goto
+      given-names: Masato
+    - family-names: Sumi
+      given-names: Hirofumi
+    - family-names: Amano
+      given-names: Hideharu
+    - family-names: Kosuge
+      given-names: Atsutake
+    - family-names: Ikeda
+      given-names: Makoto
+    - family-names: Mita
+      given-names: Yoshio
+  collection-title: >-
+    Adjunct Proceedings of the 39th Annual ACM Symposium on User Interface
+    Software and Technology
+  collection-type: proceedings
+  conference:
+    name: UIST Adjunct '26
+    city: Detroit
+    region: MI
+    country: US
+  publisher:
+    name: Association for Computing Machinery
+    city: New York
+    region: NY
+    country: US
+  year: 2026
+  pages: 3
+  isbn: "9798400728556"
+  doi: 10.1145/3830397.3841852
+  url: https://doi.org/10.1145/3830397.3841852
+  keywords:
+    - Circuit design
+    - Prototyping
+    - Application-specific integrated circuit (ASIC)
+    - Gate array
+  abstract: >-
+    Application-specific integrated circuit design remains inaccessible to
+    non-experts because it requires specialized design environments and
+    extensive domain expertise. Although gate arrays enable rapid and low-cost
+    ASIC prototyping through prefabrication and abstraction, existing design
+    tools still rely on expert-oriented workflows and limit their
+    accessibility. This paper presents a web-based ASIC design tool for
+    gate-array-based prototyping. The proposed system allows users to design
+    circuits, perform SPICE simulation, and visualize chip layouts entirely
+    within a web browser while hiding process-dependent confidential
+    manufacturing information from end users. As a feasibility demonstration,
+    we designed and fabricated a gate-array-based ASIC implementing a 31-stage
+    ring oscillator composed of 132 MOS transistors. The complete process from
+    design data generation to chip fabrication was completed within six hours.
+    These results demonstrate the potential of browser-based environments to
+    democratize rapid ASIC prototyping.

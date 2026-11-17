@@ -163,6 +163,30 @@ npm run build                    # 日本語を既定にしたビルド → dist
 
 ディレクトリ構成、画面の文言（i18n）の決まり、ドキュメントの作り方は [アーキテクチャと開発](https://kadomoto-lab.github.io/agile-x-studio/development/) を参照してください。
 
+## 引用
+
+研究や論文で Agile-X Studio を使った場合は、次の論文を引用してください。
+
+```bibtex
+@inproceedings{kadomoto2026designing,
+  title     = {Designing Chips in the Browser: Democratizing {ASIC} Prototyping with Gate Arrays},
+  author    = {Kadomoto, Junichiro and Goto, Masato and Sumi, Hirofumi and Amano, Hideharu and Kosuge, Atsutake and Ikeda, Makoto and Mita, Yoshio},
+  booktitle = {Adjunct Proceedings of the 39th Annual ACM Symposium on User Interface Software and Technology},
+  series    = {UIST Adjunct '26},
+  articleno = {87},
+  numpages  = {3},
+  year      = {2026},
+  location  = {Detroit, MI, USA},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  isbn      = {9798400728556},
+  doi       = {10.1145/3830397.3841852},
+  url       = {https://doi.org/10.1145/3830397.3841852}
+}
+```
+
+機械可読なメタデータは [CITATION.cff](CITATION.cff) にあります。GitHub のリポジトリ画面の「Cite this repository」からも、同じ情報を APA や BibTeX の形で取り出せます。
+
 ## ライセンス
 
 [MIT License](LICENSE)。リポジトリとビルドした画面に GPL のコードは入っていません。API サーバが読み込む KLayout の Python モジュール（GPL-3.0-or-later）など、一緒に使うソフトウェアのライセンスと配布の注意は [ライセンス](https://kadomoto-lab.github.io/agile-x-studio/licenses/) にまとめています。

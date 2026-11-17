@@ -179,6 +179,31 @@ npm run build:en                 # build with English as the default → dist-en
 The directory layout, the rules for interface strings (i18n) and how to build the documentation are in
 [Architecture and development](https://kadomoto-lab.github.io/agile-x-studio/en/development/).
 
+## Citation
+
+If you use Agile-X Studio in your research, please cite:
+
+```bibtex
+@inproceedings{kadomoto2026designing,
+  title     = {Designing Chips in the Browser: Democratizing {ASIC} Prototyping with Gate Arrays},
+  author    = {Kadomoto, Junichiro and Goto, Masato and Sumi, Hirofumi and Amano, Hideharu and Kosuge, Atsutake and Ikeda, Makoto and Mita, Yoshio},
+  booktitle = {Adjunct Proceedings of the 39th Annual ACM Symposium on User Interface Software and Technology},
+  series    = {UIST Adjunct '26},
+  articleno = {87},
+  numpages  = {3},
+  year      = {2026},
+  location  = {Detroit, MI, USA},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  isbn      = {9798400728556},
+  doi       = {10.1145/3830397.3841852},
+  url       = {https://doi.org/10.1145/3830397.3841852}
+}
+```
+
+Machine-readable metadata is in [CITATION.cff](CITATION.cff). You can also get it as APA or BibTeX from "Cite this
+repository" on the GitHub repository page.
+
 ## License
 
 [MIT License](LICENSE). The repository and the built interface contain no GPL code. The licenses of the software it
